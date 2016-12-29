@@ -1,7 +1,0 @@
-X:\Github\CFR\CFR\bin\Debug\CFR.XML
-X:\Github\CFR\CFR\bin\Debug\CFR.dll
-X:\Github\CFR\CFR\bin\Debug\CFR.pdb
-X:\Github\CFR\CFR\bin\Debug\FSharp.Core.dll
-X:\Github\CFR\CFR\bin\Debug\FSharp.Core.xml
-X:\Github\CFR\CFR\obj\Debug\CFR.dll
-X:\Github\CFR\CFR\obj\Debug\CFR.pdb
