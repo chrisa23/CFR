@@ -22,22 +22,38 @@ module KuhnPoker =
                 s.Strategy.[a] <- s.Strategy.[a] / normalizingSum
             else
                 s.Strategy.[a] <- 1.0 / float(s.Actions)
-
-            s.StrategySum.[a] <- realizationWeight + s.Strategy.[a]
+            
+            s.StrategySum.[a] <- s.StrategySum.[a] + realizationWeight * s.Strategy.[a]
 
     
-    let rec cfr (dict:Dictionary<string, Strategy>) (cards:int[]) (history:string) p0 p1 =
+    let calcUtil (cards:int[]) (history:string) =
+        let plays = history.Length
+        let value = if history.Substring(history.Length - 2, 2) = "bb" then 2. else 1.
         
+        match history.EndsWith("bp"), plays, cards.[0] > cards.[1] with
+        | true, 2, _ -> [| 1.; -1.|]
+        | true, 3, _ -> [| -1.; 1.|]
+        | false, _, true -> [| value ; -value |]
+        | false, _, false -> [| -value ; value |]  
 
-        let calcUtil (dict:Dictionary<string, Strategy>) (cards:int[]) (history:string) p0 p1  = 
-            let plays = history.Length
-            let player = plays % 2
+    let rec cfr (dict:Dictionary<string, Strategy>) (cards:int[]) (history:string) p0 p1 =
+        let plays = history.Length
+        let player = plays % 2
+        let isTerminal = history = "pp" || history = "bp" || history = "pbp" || history = "bb" || history = "pbb"
+        if isTerminal then 
+            let util = (calcUtil cards history)
+            //printfn "%A %A %A" cards history util
+            util.[player]
+        else 
             let infoSet = string(cards.[player]) + history
             if not (dict.ContainsKey infoSet) then
                 dict.[infoSet] <- create NumActions
             let node = dict.[infoSet]
-        
+            
             getNodeStrategy node (if player = 0 then p0 else p1)
+
+            //printfn "%A %A" player node
+
             let util = Array.zeroCreate<float> NumActions
             let mutable nodeUtil = 0.
             for a in 0..1 do
@@ -54,26 +70,7 @@ module KuhnPoker =
                 node.RegretSum.[a] <- node.RegretSum.[a] + (if player = 0 then p1 else p0) * regret
 
             nodeUtil
-
-        let plays = history.Length
-        let player = plays % 2
-        let opponent = 1 - player
-        let secondRound = plays > 1
-
-        if secondRound then 
-            let terminalPass = history.[plays - 1] = 'p'
-            let doubleBet = history.Substring(plays - 2, 2) = "bb"
-            let isPlayerCardHigher = cards.[player] > cards.[opponent]
-            match  terminalPass, history = "pp", isPlayerCardHigher, doubleBet with
-            | true, true, true, _ -> 1.
-            | true, true, false, _ -> -1.
-            | true, false, _, _ -> 1.
-            | false, _, true, true -> 2.
-            | false, _, false, true -> -2.
-            | _ -> calcUtil dict cards history p0 p1
-
-        else calcUtil dict cards history p0 p1
-                   
+      
 
     let swap (a: _[]) x y =
         let tmp = a.[x]
@@ -91,5 +88,7 @@ module KuhnPoker =
         let mutable util = 0.
         for i in 1..iterations do
             shuffle cards
+            shuffle cards
             util <- util + cfr dict cards "" 1. 1.
         dict, util
+

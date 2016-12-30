@@ -2,8 +2,10 @@
 
 module CFRStrategy =
     open System
+    open Troschuetz.Random.Distributions.Continuous
+    open Troschuetz.Random.Generators
 
-    let rnd = new Random()
+    let rnd = new Random()//new Troschuetz.Random.Generators.MT19937Generator()
 
     type Strategy = 
         {

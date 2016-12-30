@@ -33,8 +33,3 @@ module RockPaperScissors =
 
         strat
 
-//    let s = train [| 0.3; 0.3; 0.4 |] 1000000
-//    let strat = getAverageStrategy s
-//
-//    for i in 0..1000 do
-//        printfn "%d" (getAction [| 0.3; 0.3; 0.4 |])
