@@ -71,3 +71,33 @@ module CFRStrategy =
         
         f strat.[0] 0 strat
 
+
+    //Pure CFR
+    let getPureStrategy s = 
+        //get max regret index
+        let mutable i = 0
+        let mutable max = 0.
+        for a in 0..s.Actions-1 do
+            if s.RegretSum.[a] > max then
+                i <- a
+                max <- s.RegretSum.[a]
+        
+        for a in 0..s.Actions-1 do
+            s.Strategy.[a] <- if a = i then 1. else 0.
+
+            s.StrategySum.[a] <- s.StrategySum.[a] + s.Strategy.[a]
+
+    let getPureStrategyFromSum  s =
+        let avgStrategy = Array.zeroCreate<float> s.Actions
+        let mutable i = 0
+        let mutable max = 0.
+        for a in 0..s.Actions-1 do
+            if s.StrategySum.[a] >= max then
+                i <- a
+                max <- s.StrategySum.[a]
+    
+        for a in 0..s.Actions-1 do
+            avgStrategy.[a] <- if a = i then 1. else 0.
+
+        avgStrategy
+

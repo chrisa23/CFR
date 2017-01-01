@@ -54,10 +54,14 @@
     <Compile Include="CFRStrategyTests.fs" />
     <Compile Include="RockPapaerScissorsTests.fs" />
     <Compile Include="KuhnPokerTests.fs" />
+    <Compile Include="ShovePokerTests.fs" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="fspoker">
+      <HintPath>..\lib\fspoker.dll</HintPath>
+    </Reference>
     <Reference Include="FsUnit.Xunit">
       <HintPath>..\packages\FsUnit.xUnit.1.4.1.0\lib\net45\FsUnit.Xunit.dll</HintPath>
       <Private>True</Private>
