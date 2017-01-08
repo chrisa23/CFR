@@ -1,0 +1,6 @@
+- Adjust NumCall to include position
+- Parallelize
+- Gen Push Fold tables
+- HU Limit Poker
+- 3 PLayer Limit Poker
+- HU NL Poker
