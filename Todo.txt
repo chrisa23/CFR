@@ -1,4 +1,4 @@
-- Adjust NumCall to include position
+- Figure out issue with late position open shove
 - Parallelize
 - Gen Push Fold tables
 - HU Limit Poker
